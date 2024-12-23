@@ -68,34 +68,39 @@ const LoginPage = () => {
 
 
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Login error:", error); // Logs the error
       setErrorMessage("An error occurred. Please try again.");
-
-      if(error.response){
-        const {status} = error.response;
-        switch (status) {
-
-            case 404:
-                console.log('not a valid email');
-                setAlert({ show: true, message: 'Please Provide valid Email', type: 'danger', textColor: 'danger' })
-                break;
-            case 401:
-                console.log('invalid password');
-                setAlert({ show: true, message: 'Invalid Password', type: 'danger', textColor: 'danger' })
-                break;
-            case 403:
-                console.log('plan expired');
-                setAlert({ show: true, message: 'Please upgrade, plan expired', type: 'danger', textColor: 'danger' })
-                break;
-            default:
-                console.log('something went to wrong!');
-                break;
-        }
-    }
-    else{
-        setAlert({ show: true, message: 'Network error. Please check your connection.', type: 'danger', textColor: 'danger' })
-    }
-    }
+  
+      if (error.response) {
+          const { status } = error.response;
+  
+          // Log the error status
+          console.log("Error Status:", status);
+  
+          switch (status) {
+              case 404:
+                  console.log("Not a valid email");
+                  setAlert({ show: true, message: "Please provide a valid email", type: "danger", textColor: "danger" });
+                  break;
+              case 401:
+                  console.log("Invalid password");
+                  setAlert({ show: true, message: "Invalid password", type: "danger", textColor: "danger" });
+                  break;
+              case 403:
+                  console.log("Plan expired");
+                  setAlert({ show: true, message: "Please upgrade, plan expired", type: "danger", textColor: "danger" });
+                  break;
+              default:
+                  console.log("Something went wrong!");
+                  setAlert({ show: true, message: "An unexpected error occurred.", type: "danger", textColor: "danger" });
+                  break;
+          }
+      } else {
+          console.log("Network error or no response received");
+          setAlert({ show: true, message: "Network error. Please check your connection.", type: "danger", textColor: "danger" });
+      }
+  }
+  
   };
 
   return (
