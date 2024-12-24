@@ -7,23 +7,22 @@ import FileAnswer from "../components/FileAnswer";
 
 const DashBoard = () => {
   return (
-    <div className="d-flex flex-column position-fixed top-0 w-100">
+    <div className="d-flex flex-column w-100" style={{ minHeight: "100vh" }}>
+      {/* Navbar */}
       <nav
-        className="navbar navbar-expand-lg"
+        className="navbar navbar-expand-lg navbar-light"
         style={{ backgroundColor: "#B5CFFF" }}
       >
         <div className="container-fluid">
-          <Link className="navbar-brand">
+          <Link className="navbar-brand" to="/">
             <img
               src={logo}
-              alt="Logo"
+              alt="Intern Pro Logo"
               width="30"
               height="28"
               className="d-inline-block align-text-top me-3"
             />
-            <span style={{ color: "#012970", fontSize: "20px" }}>
-              Intern Pro
-            </span>
+            <span style={{ color: "#012970", fontSize: "20px" }}>Intern Pro</span>
           </Link>
           <button
             className="navbar-toggler"
@@ -38,11 +37,11 @@ const DashBoard = () => {
           </button>
           <div
             className="collapse navbar-collapse d-flex justify-content-end"
-            id="navbar-text"
+            id="navbarNav"
           >
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" aria-current="page" to="/">
+                <Link className="nav-link" to="/">
                   Home
                 </Link>
               </li>
@@ -52,7 +51,7 @@ const DashBoard = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
+                <Link className="nav-link active" to="/dashboard">
                   Dashboard
                 </Link>
               </li>
@@ -70,14 +69,46 @@ const DashBoard = () => {
           </div>
         </div>
       </nav>
-      <div style={{ backgroundColor: "#f6f9ff", minHeight: "100vh" }}>
-      <FileAnswer />
-      <FileUpload />
-      <FileQuery />
+
+      {/* Main Content */}
+      <div style={{ backgroundColor: "#f6f9ff", flex: "1", padding: "20px" }}>
+        {/* Error Boundaries for Components */}
+        <ErrorBoundary>
+          <FileAnswer />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FileUpload />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FileQuery />
+        </ErrorBoundary>
       </div>
-    
     </div>
   );
 };
+
+// ErrorBoundary Component for Safety
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught in ErrorBoundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong. Please try again later.</div>;
+    }
+
+    return this.props.children;
+  }
+}
 
 export default DashBoard;
