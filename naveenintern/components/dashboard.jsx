@@ -1,11 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../img/logo.jpg";
 import FileUpload from "../components/FileUpload";
 import FileQuery from "../components/FileQuery";
 import FileAnswer from "../components/FileAnswer";
 
 const DashBoard = () => {
+  const navigate = useNavigate();
+
+  // Check login status using "jwtToken"
+  const isLoggedIn = Boolean(localStorage.getItem("jwtToken"));
+
+  // Handle logout
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("jwtToken"); // Remove "jwtToken" from localStorage
+      navigate("/LoginPage"); // Redirect to login page
+      alert("You have been logged out successfully!"); // Feedback message
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   return (
     <div className="d-flex flex-column w-100" style={{ minHeight: "100vh" }}>
       {/* Navbar */}
@@ -22,7 +37,9 @@ const DashBoard = () => {
               height="28"
               className="d-inline-block align-text-top me-3"
             />
-            <span style={{ color: "#012970", fontSize: "20px" }}>Intern Pro</span>
+            <span style={{ color: "#012970", fontSize: "20px" }}>
+              Intern Pro
+            </span>
           </Link>
           <button
             className="navbar-toggler"
@@ -50,21 +67,45 @@ const DashBoard = () => {
                   Price
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link active" to="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/register">
-                  Register
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/LoginPage">
-                  Login
-                </Link>
-              </li>
+              {/* Conditionally render Dashboard */}
+              {/* {isLoggedIn && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+              )} */}
+
+              {/* Conditionally render Register/Login or Logout */}
+              {!isLoggedIn ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register">
+                      Register
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/LoginPage">
+                      Login
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <button
+                    className="btn nav-link"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      color: "#012970",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>

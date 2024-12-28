@@ -36,11 +36,12 @@ router.post('/userlogin', async function (req, res, next) {
     if (curTime > expiryTime) {
       return res.status(403).json({
         message: "Plan expired. Please upgrade!",
+        expiredUserId: userDetails._id, // Include the user ID here
       });
     }
 
     // Generate JWT token
-    const SECRET =process.env.JWT_SECRET ;
+    const SECRET = process.env.JWT_SECRET;
     const token = jwt.sign({ email }, SECRET, { expiresIn: "1h" });
 
     // Successful login
@@ -48,7 +49,7 @@ router.post('/userlogin', async function (req, res, next) {
       message: "Login successful",
       userDetails: {
         email: userDetails.email,
-        name: userDetails.name, // Adjust fields as needed
+        // name: userDetails.name, // Adjust fields as needed
       },
       token,
     });
@@ -59,5 +60,6 @@ router.post('/userlogin', async function (req, res, next) {
     });
   }
 });
+
 
 module.exports = router;
