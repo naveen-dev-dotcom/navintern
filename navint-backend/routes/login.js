@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var registrationSchema = require('./model/registrationschema');
+var registrationSchema = require('./model/registrationSchema');
 var bcrypt = require('bcrypt');
 var jwt = require("jsonwebtoken");
 
