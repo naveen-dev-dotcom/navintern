@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var registrationSchema = require('./model/registrationschema');
+var registrationSchema = require('./model/registrationSchema');
 
 // Basic Test Route
 router.get('/', function (req, res, next) {
