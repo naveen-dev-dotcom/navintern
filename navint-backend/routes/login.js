@@ -11,7 +11,9 @@ router.post('/userlogin', async function (req, res, next) {
     console.log('Received login request for:', email);
 
     // Check if the email exists in the database
-    const userDetails = await registrationSchema.findOne({ email });
+    const userDetails = await registrationSchema.findOne({ 
+  email: { $regex: new RegExp("^" + email.trim() + "$", "i") } 
+});
 
     if (!userDetails) {
       return res.status(404).json({
